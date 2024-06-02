@@ -1,0 +1,55 @@
+{% extends 'adminhome.html' %}
+{% block 'body' %}
+<h3 align="center"><u>Delete Facultys</u></h3></h3><br>
+<h4>
+    Total Faculty = {{count}}
+</h4>
+<div style="text-align: center;">
+    <input class="form-control" id="myInput" type="text" placeholder="Search by any Column">
+</div>
+<table style="margin: 0 auto;" border="2" width="80%" class="table table-bordered table-striped">
+    <thead>
+    <tr bgcolor="lightblue" align="center">
+    <td>Faculty id</td>
+    <td>Fullname</td>
+    <td>Gender</td>
+    <td>Department</td>
+    <td>Qualification</td>
+    <td>Designation</td>
+    <td>Password</td>
+    <td>Email</td>
+    <td>Contact</td>
+    <td>Action</td>
+    </tr>
+    </thead>
+    <tbody id="myTable">
+    {% for faculty in facultydata %}
+    <tr align="center">
+        <td>{{faculty.faculty_id}}</td>
+        <td>{{faculty.fullname}}</td>
+        <td>{{faculty.gender}}</td>
+        <td>{{faculty.department}}</td>
+        <td>{{faculty.qualification}}</td>
+        <td>{{faculty.designation}}</td>
+        <td>{{faculty.password}}</td>
+        <td>{{faculty.email}}</td>
+        <td>{{faculty.contact}}</td>
+        <td>
+            <a href="/facultydeletion/{{faculty.id}}">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> <!-- Include jQuery library -->
+<script>
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
+{% endblock %}

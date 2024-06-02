@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SMS Project</title>
+</head>
+
+<h2 align="center">Student Academic Management System</h2>
+<link type="text/css" rel="stylesheet" href="{% static 'adminstyle.css' %}"/>
+
+<div style="background-color:lightgrey;padding:20px;font-size:15pt">
+<a href="{% url 'adminhome' %}">Home</a>&nbsp;&nbsp;&nbsp;
+<a href="{% url 'adminchangepwd' %}">Change Password</a>&nbsp;&nbsp;&nbsp;
+<a href="{% url 'adminstudent' %}">Student</a>&nbsp;&nbsp;&nbsp;
+<a href="{% url 'adminfaculty' %}">Faculty</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="{% url 'admincourse' %}">Course</a>&nbsp;&nbsp;&nbsp;
+<a href="{% url 'facultycoursemapping' %}">Faculty Course Mapping</a>
+<a href="{% url 'login' %}">Logout</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </div>
+<h3 align="right" style="color:green"><i>Welcome {{adminuname}}</i></h3>
+<br><br>
+
+{% block 'body' %}
+
+<p><center>I am in Admin Home Page</center></p>
+
+{% endblock %}
+
+</body>
+</html>

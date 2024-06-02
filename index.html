@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SMS Project</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link types="text/css" rel="stylesheet" href="{% static 'css/style.css' %}"/>
+</head>
+<body>
+<h2 align="center">Student Academic Management System</h2><br>
+<nav class="navbar">
+    <div class="logo">SMS</div>
+    <ul class="nav-links">
+        <div class="menu">
+<li> <a href="{% url 'home' %}">Home</a>&nbsp;&nbsp;&nbsp;</li>
+<li> <a href="{% url 'about' %}">About Project</a>&nbsp;&nbsp;&nbsp;</li>
+<li class="services">
+    <a href="#">Login</a>&nbsp;&nbsp;&nbsp;
+    <ul class="dropdown">
+        <li><a href="{% url 'studentlogin' %}">Student</a></li>
+        <li><a href="{% url 'facultylogin' %}">Faculty</a></li>
+        <li><a href="{% url 'login' %}">Admin</a></li>
+    </ul>
+</li>
+<li> <a href="{% url 'contact' %}">Contact Us</a>&nbsp;&nbsp;&nbsp;</li>
+        </div>
+    </ul>
+</nav>
+<br><br>
+{% block 'body' %}
+<p>Welcome to Student Management System</p><br><br>
+<center>
+<img src="{% static 'images/home1.png' %}">
+</center>
+{% endblock %}
+</body>
+</html>
