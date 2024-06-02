@@ -2,63 +2,88 @@ from django.db.models import Q
 from django.shortcuts import render
 
 # Create your views here.
-from adminapp.models import Student,Course
-from facultyapp.models import CourseContent
+from adminapp.models import Faculty,FacultyCourseMapping
+from django.shortcuts import render, redirect
+from .forms import AddCourseContentForm
+from .models import CourseContent
 
-def studenthome(request):
-    sid = request.session["sid"]
-    student=Student.objects.get(student_id=sid)
-    print(student)
-    return render(request,"studenthome.html",{"sid":sid,"student":student})
 
-def checkstudentlogin(request):
-    sid = request.POST["sid"]
+def facultyhome(request):
+    fid = request.session["fid"]
+    return render(request,"facultyhome.html",{"fid":fid})
+
+def checkfacultylogin(request):
+    fid = request.POST["fid"]
     pwd = request.POST["pwd"]
-    flag = Student.objects.filter(Q(student_id=sid) & Q(password=pwd))  # Update 'studentid' to 'student_id'
+    flag = Faculty.objects.filter(Q(faculty_id=fid) & Q(password=pwd))  # Update 'studentid' to 'student_id'
     print(flag)
 
     if flag:
         print("login sucess")
-        request.session["sid"] = sid
-        student = Student.objects.get(student_id=sid)
-        return render(request, "studenthome.html", {"sid": sid,"student":student})
+        request.session["fid"] = fid
+        return render(request, "facultyhome.html", {"fid": fid})
     else:
         msg = "Login Failed"
-        return render(request, "studentlogin.html", {"message": msg})
+        return render(request, "facultylogin.html", {"message": msg})
 
-def studentchangepwd(request):
-    sid = request.session["sid"]
-    return render(request,"studentchangepwd.html",{"sid":sid})
+def facultycourses(request):
+    fid = request.session["fid"]
+    mappingcourses=FacultyCourseMapping.objects.all()
+    fmcourses = []
+    for course in mappingcourses:
+        #print(course.faculty.faculty_id)
+        if(course.faculty.faculty_id == int(fid)):
+            fmcourses.append(course)
+    print(fmcourses)
+    count=len(fmcourses)
+    return render(request,"facultycourses.html",{"fid":fid,"fmcourses":fmcourses,"count":count})
 
-def studentupdatedpwd(request):
-    sid = request.session["sid"]
+def facultychangepwd(request):
+    fid = request.session["fid"]
+    return render(request,"facultychangepwd.html",{"fid":fid})
+
+def facultyupdatedpwd(request):
+    fid = request.session["fid"]
     opwd=request.POST["opwd"]
     npwd = request.POST["npwd"]
-    flag=Student.objects.filter(Q(student_id=sid)& Q(password=opwd))
+    flag=Faculty.objects.filter(Q(faculty_id=fid)& Q(password=opwd))
     if flag:
         print("Old pwd is Correct")
-        Student.objects.filter(student_id=sid).update(password=npwd)
+        Faculty.objects.filter(faculty_id=fid).update(password=npwd)
         print("updated")
         msg = "Password Updated Successfully"
     else:
         print("Old pwd is Invalid")
         msg = "Old Password is Incorrect"
-    return render(request,"studentchangepwd.html",{"sid": sid,"message":msg})
+    return render(request,"facultychangepwd.html",{"fid": fid,"message":msg})
 
-def studentcourses(request):
-    sid = request.session["sid"]
-    return render(request,"studentcourses.html",{"sid":sid})
+def uploadcoursecontent(request):
+    fid = request.session["fid"]
+    if request.method == 'POST':
+        form = AddCourseContentForm(request.POST, request.FILES)
+        if form.is_valid():
+            # Extract data from the form
+            faculty_id = request.session["fid"]
+            faculty = Faculty.objects.get(faculty_id=faculty_id)
+            course_id = form.cleaned_data['course'].id
+            description = form.cleaned_data['description']
+            link = form.cleaned_data['link']
+            contentimage = form.cleaned_data['contentimage']
 
-def studentcoursecontent(request):
-    sid = request.session["sid"]
-    content = CourseContent.objects.all()
-    return render(request,"studentcoursecontent.html",{"sid":sid,"coursecontent":content})
+            # Save course content to the database
+            course_content = CourseContent.objects.create(
+                faculty=faculty,
+                course_id=course_id,
+                description=description,
+                link=link,
+                contentimage=contentimage
+            )
 
-def displaystudentcourses(request):
-    sid = request.session["sid"]
-    ay=request.POST['ay']
-    sem = request.POST['sem']
+            # Optionally, you can redirect to a success page
+            return redirect('facultyhome')
+    else:
+        form =AddCourseContentForm()
 
-    courses=Course.objects.filter(Q(academic_year=ay)&Q(semester=sem))
-    return render(request,"displaystudentcourses.html",{"courses":courses,"sid":sid})
+    # If the request method is GET or form is invalid, render the form again
+    return render(request, 'uploadcoursecontent.html', {'form': form,"fid": fid})
 

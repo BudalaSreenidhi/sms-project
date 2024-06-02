@@ -1,3 +1,5 @@
 from django.contrib import admin
 
-# Register your models here.
+from facultyapp.models import CourseContent
+
+admin.site.register(CourseContent)
