@@ -1,0 +1,45 @@
+{% extends 'studenthome.html' %}
+{% block 'body' %}
+<h3 align="center"><u>View Courses</u></h3><br>
+
+<div style="text-align: center;">
+    <input class="form-control" id="myInput" type="text" placeholder="Search by any Column">
+</div>
+<table style="margin: 0 auto;" border="2" width="50%" class="table table-bordered table-striped">
+    <thead>
+    <tr bgcolor="lightblue" align="center">
+    <td>Department</td>
+     <td>Program</td>
+    <td>Year</td>
+    <td>Course code</td>
+    <td>Course title</td>
+    <td>LTPS</td>
+    <td>Credits</td>
+    </tr>
+    </thead>
+    <tbody id="myTable">
+    {% for course in courses %}
+    <tr align="center">
+        <td>{{course.department}}</td>
+        <td>{{course.program}}</td>
+        <td>{{course.year}}</td>
+        <td>{{course.course_code}}</td>
+        <td>{{course.course_title}}</td>
+        <td>{{course.ltps}}</td>
+        <td>{{course.credits}}</td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> <!-- Include jQuery library -->
+<script>
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
+{% endblock %}

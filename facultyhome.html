@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SMS Project</title>
+</head>
+
+<h2 align="center">Student Academic Management System</h2>
+<link type="text/css" rel="stylesheet" href="{% static 'adminstyle.css' %}"/>
+
+<div style="background-color:lightgrey;padding:20px;font-size:15pt">
+<a href="{% url 'facultyhome' %}">Home</a>&nbsp;&nbsp;&nbsp;
+<a href="{% url 'facultychangepwd' %}">Change Password</a>&nbsp;&nbsp;&nbsp;
+<a href="{% url 'facultycourses' %}">My Courses</a>&nbsp;&nbsp;&nbsp;
+<a href="{% url 'uploadcoursecontent' %}">Course Content</a>&nbsp;&nbsp;&nbsp;
+<a href="{% url 'facultylogin' %}">Logout</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</div>
+<h3 align="right" style="color:green"><i>Welcome {{fid}}</i></h3>
+
+<br><br>
+
+{% block 'body' %}
+<p>I am in faculty Home Page</p>
+{% endblock %}
+
+</body>
+</html>

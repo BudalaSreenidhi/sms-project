@@ -1,0 +1,13 @@
+{% extends 'facultyhome.html' %}
+{% block 'body' %}
+<h2 align="center" style="color:red">{{msg}}</h2>
+<h3 align="center"><u>Add Course Content</u></h3>
+<center>
+<form method="post" action="{% url 'uploadcoursecontent' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="submit" value="Add" class="addbutton">
+    <input type="reset" value="Clear" class="addbutton">
+</form>
+</center>
+{% endblock %}
